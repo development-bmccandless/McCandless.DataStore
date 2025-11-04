@@ -7,4 +7,8 @@
 	  <RootNamespace>McCandless.DataStore</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="9.0.10" />
+  </ItemGroup>
+
 </Project>
