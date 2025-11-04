@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution", "solution", "{02
 		LICENSE = LICENSE
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McCandless.DataStore.SoftDeletable", "McCandless.DataStore.SoftDeletable\McCandless.DataStore.SoftDeletable.csproj", "{7A9C1294-E2C9-4BBF-9084-EB6C4AC43201}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{F651B7DB-941E-4D53-B1D8-570C6581EF6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F651B7DB-941E-4D53-B1D8-570C6581EF6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F651B7DB-941E-4D53-B1D8-570C6581EF6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9C1294-E2C9-4BBF-9084-EB6C4AC43201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9C1294-E2C9-4BBF-9084-EB6C4AC43201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9C1294-E2C9-4BBF-9084-EB6C4AC43201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9C1294-E2C9-4BBF-9084-EB6C4AC43201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
