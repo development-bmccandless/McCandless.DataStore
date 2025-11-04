@@ -4,11 +4,11 @@
 
     public abstract class EntityDataStore<TEntityBase, TIdentity> : IEntityDataStore<TEntityBase, TIdentity> where TEntityBase : EntityBase<TIdentity>
     {
-        private readonly IEntityDataStore<TEntityBase, TIdentity> inner;
+        private readonly IDataStoreAdapter<TEntityBase, TIdentity> adapter;
 
-        public EntityDataStore(IEntityDataStore<TEntityBase, TIdentity> inner)
+        public EntityDataStore(IDataStoreAdapter<TEntityBase, TIdentity> adapter)
         {
-            this.inner = inner ?? throw new ArgumentNullException(nameof(inner));
+            this.adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
         }
 
         public TEntity Create<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase
@@ -20,21 +20,21 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.Create(entity, context);
+            return adapter.Create(entity, context);
         }
 
         public TEntity Delete<TEntity>(TIdentity identity, OperationContext context) where TEntity : TEntityBase
         {
             ValidateInput(identity, context);
 
-            return inner.Delete<TEntity>(identity, context);
+            return adapter.Delete<TEntity>(identity, context);
         }
 
         public TEntity Get<TEntity>(TIdentity identity, OperationContext context) where TEntity : TEntityBase
         {
             ValidateInput(identity, context);
 
-            return inner.Get<TEntity>(identity, context);
+            return adapter.Get<TEntity>(identity, context);
         }
 
         public TEntity Update<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase
@@ -44,7 +44,7 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.Update(entity, context);
+            return adapter.Update(entity, context);
         }
 
         public TEntity Upsert<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase
@@ -56,7 +56,7 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.Create(entity, context);
+            return adapter.Create(entity, context);
         }
 
         private static void ValidateInput<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase
