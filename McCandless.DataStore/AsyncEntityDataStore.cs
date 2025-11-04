@@ -6,11 +6,11 @@
 
     public abstract class AsyncEntityDataStore<TEntityBase, TIdentity> : IAsyncEntityDataStore<TEntityBase, TIdentity> where TEntityBase : EntityBase<TIdentity>
     {
-        private readonly IAsyncEntityDataStore<TEntityBase, TIdentity> inner;
+        private readonly IAsyncDataStoreAdapter<TEntityBase, TIdentity> adapter;
 
-        public AsyncEntityDataStore(IAsyncEntityDataStore<TEntityBase, TIdentity> inner)
+        public AsyncEntityDataStore(IAsyncDataStoreAdapter<TEntityBase, TIdentity> adapter)
         {
-            this.inner = inner ?? throw new ArgumentNullException(nameof(inner));
+            this.adapter = adapter ?? throw new ArgumentNullException(nameof(adapter));
         }
 
         public Task<TEntity> CreateAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
@@ -22,21 +22,21 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.CreateAsync(entity, context, cancellationToken);
+            return adapter.CreateAsync(entity, context, cancellationToken);
         }
 
         public Task<TEntity> DeleteAsync<TEntity>(TIdentity identity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
         {
             ValidateInput(identity, context);
 
-            return inner.DeleteAsync<TEntity>(identity, context, cancellationToken);
+            return adapter.DeleteAsync<TEntity>(identity, context, cancellationToken);
         }
 
         public Task<TEntity> GetAsync<TEntity>(TIdentity identity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
         {
             ValidateInput(identity, context);
 
-            return inner.GetAsync<TEntity>(identity, context, cancellationToken);
+            return adapter.GetAsync<TEntity>(identity, context, cancellationToken);
         }
 
         public Task<TEntity> UpdateAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
@@ -46,7 +46,7 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.UpdateAsync(entity, context, cancellationToken);
+            return adapter.UpdateAsync(entity, context, cancellationToken);
         }
 
         public Task<TEntity> UpsertAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
@@ -58,7 +58,7 @@
             entity.UpdatedBy = context.UserAgent;
             entity.UpdatedDateTime = DateTime.UtcNow;
 
-            return inner.CreateAsync(entity, context, cancellationToken);
+            return adapter.CreateAsync(entity, context, cancellationToken);
         }
 
         private static void ValidateInput<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase

@@ -17,7 +17,7 @@
 
         public async Task<TEntity> CreateAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
         {
-            ValidateInput(entity, context);
+            ValidateInput(entity, context, nameof(CreateAsync));
 
             bool exists = false;
             try
@@ -61,7 +61,7 @@
 
         public async Task<TEntity> UpdateAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
         {
-            ValidateInput(entity, context);
+            ValidateInput(entity, context, nameof(UpdateAsync));
 
             TEntity _ = await GetCoreAsync<TEntity>(entity.GetIdentity(), context, cancellationToken);
 
@@ -70,7 +70,7 @@
 
         public Task<TEntity> UpsertAsync<TEntity>(TEntity entity, OperationContext context, CancellationToken cancellationToken) where TEntity : TEntityBase
         {
-            ValidateInput(entity, context);
+            ValidateInput(entity, context, nameof(UpsertAsync));
 
             // clear out any soft-deletion metadata
             entity.IsDeleted = false;
@@ -103,12 +103,12 @@
             return entity;
         }
 
-        private static void ValidateInput<TEntity>(TEntity entity, OperationContext context) where TEntity : TEntityBase
+        private static void ValidateInput<TEntity>(TEntity entity, OperationContext context, string operation) where TEntity : TEntityBase
         {
             if (entity is null) throw new ArgumentNullException(nameof(entity));
             if (context is null) throw new ArgumentNullException(nameof(context));
 
-            if (entity.IsDeleted == true) throw new ArgumentException($"{nameof(SoftDeletableEntityBase<TIdentity>.IsDeleted)} cannot be set to true in {nameof(Update)}", nameof(entity));
+            if (entity.IsDeleted == true) throw new ArgumentException($"{nameof(SoftDeletableEntityBase<TIdentity>.IsDeleted)} cannot be set to true in {operation}", nameof(entity));
         }
 
         private static void ValidateInput(TIdentity identity, OperationContext context)
